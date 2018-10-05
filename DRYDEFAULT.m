@@ -6,6 +6,7 @@ clear
 % Duration           2 Myr
 % Initial Range      10-15 km
 % B.Temperature      1150 C
+% Pressure           3 kbar
 % Basalt             DRY
 % Granitoid          DRY
 % Latent Heat        Even
@@ -13,13 +14,14 @@ clear
 
 %%%% PARAMTER DEFINITIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-model = 'DRYDEFAULTdenscheck2';
+model = 'DRYDEFAULT';
 
 Num=600;
 MinDeltaX=5;
 Cycles=100;
 
 FileBase=sprintf('%s_%d_%0.2f',model,Num,MinDeltaX);
+% DIRECTORY NAME BELOW FOR OUTPUT %
 SolnDir='/cmld/data4/calogero/TestThermEvol/RunOutput/DRYDEFAULT';
 
 SillThick=50;
@@ -44,14 +46,13 @@ MAT.Advect.Max = zeros(1,length(MAT.Border)-1);
 
 % IF USING AN ALREADY DETERMINED SET OF SILLS
 SILL.x=zeros(Cycles,3);
-load RunOutput/BTT8/Sillx_BTT8a_600_5.00.mat;
 SILL.x(:,2)=SillPositionSave(1:100,2)*1000;
 
-% IF GENERATING A NEW SET OF SILLS
-% for ii=1:Cycles
-%    SILL.x(ii,2)=unifrnd((-15000)-SillThick*(ii-1), ...
-%        (-10000),1,1);
-% end
+IF GENERATING A NEW SET OF SILLS
+for ii=1:Cycles
+   SILL.x(ii,2)=unifrnd((-15000)-SillThick*(ii-1), ...
+       (-10000),1,1);
+end
 
 % fix sill nodes with node grid
 SILL.x(:,2)=round(SILL.x(:,2)./MinDeltaX).*MinDeltaX;
